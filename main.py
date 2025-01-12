@@ -1,45 +1,21 @@
-class Bill:
-    """
-    Object that contains data about a bill, such as total
-    amount and period of the bill
-    """
+from flat import Bill, Flatmate
+from report import PdfReport
 
-    def __init__(self, amount, period):
-        self.amount = amount
-        self.period = period
+amount = float(input("Hey user, enter the bill amount: "))
+period = input("What is the bill period? Eg. December 2020: ")
 
+name1 = input("What is your name? ")
+days_in_house1 = int(input(f"How many days did {name1} stay in the house? "))
 
-class Flatmate:
-    """
-    Creates a flatmate person who lives in the flat
-    and pays a share of the bill
-    """
+name2 = input("What is name of the other flatmate? ")
+days_in_house2 = int(input(f"How many days did {name2} stay in the house? "))
 
-    def __init__(self, name, days_in_house):
-        self.days_in_house = days_in_house
-        self.name = name
+the_bill = Bill(amount = amount, period = period)
+flatmate1 = Flatmate(name1, days_in_house1)
+flatmate2 = Flatmate(name2, days_in_house2)
 
-    def pays(self, bill,flatmate2):
-        weight = self.days_in_house/(self.days_in_house + flatmate2.days_in_house)
-        to_pay = bill.amount * weight
-        return to_pay
+print(f"{flatmate1.name} Pays",flatmate1.pays(the_bill, flatmate2))
+print(f"{flatmate2.name} Pays",flatmate2.pays(the_bill, flatmate1))
 
-class PdfReport:
-    """
-    Create a PDF file with data about flatmates
-    name, due and period of bill
-    """
-
-    def __init__(self, filename):
-        self.filename = filename
-
-    def generate(self, flatmate1, flatmate2, bill):
-        pass
-
-
-the_bill = Bill(amount = 120, period = "March 2021")
-john = Flatmate(name = "John", days_in_house=20)
-marry = Flatmate(name="Marry",days_in_house=25)
-
-print("John Pays",john.pays(bill = the_bill, flatmate2=marry))
-print("Marry Pays",marry.pays(bill = the_bill, flatmate2=john))
+pdf_report = PdfReport(filename=f"{the_bill.period}.pdf")
+pdf_report.generate(flatmate1, flatmate2, the_bill)
